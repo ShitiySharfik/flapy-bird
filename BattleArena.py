@@ -7,13 +7,12 @@ TILE_SIZE = 16
 WALKABLE = 1
 SOLID = 2
 INTERFACE = 3
-
-
+WALKABLE3 = 4
+SOLID3 = 5
 class BattleArena:
 
     def __init__(self):
-
-        self.arena = [
+        self.arena_phase1 = [
             [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             [2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
@@ -23,7 +22,22 @@ class BattleArena:
             [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 2],
             [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+
         ]
+        self.arena_phase3 = [
+            [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+            [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+            [5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5],
+            [5, 4, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5],
+            [5, 4, 5, 4, 4, 4, 4, 5, 4, 4, 4, 5],
+            [5, 4, 4, 4, 5, 4, 4, 4, 4, 5, 4, 5],
+            [5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 4, 5],
+            [5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5],
+            [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+        ]
+
+
+        self.arena = self.arena_phase1
 
         # Кирпич
         self.brick_images = {
@@ -70,7 +84,7 @@ class BattleArena:
 
         tile = self.arena[tile_y][tile_x]
 
-        if tile == SOLID or tile == INTERFACE:
+        if tile == SOLID or tile == INTERFACE or tile == SOLID3:
             return True
 
         return False
@@ -132,5 +146,7 @@ class BattleArena:
 
         surface.blit(arena_surface, (0, 0))
 
+    def set_phase3_arena(self):
+        self.arena = self.arena_phase3
 
 

@@ -151,6 +151,19 @@ while running:
         ])
 
         game_state = "dialogue"
+        ending_dialogue = Dialogue([
+            ("Ерам", "..."),
+            ("Ерам", "Ну что..."),
+            ("Ерам", "Ты всё-таки смог."),
+            ("Ерам", "..."),
+            ("Ерам", "Честно говоря, я уже не ожидал."),
+            ("Ерам", "Думал, ты сдашься раньше."),
+            ("Ерам", "Ха."),
+            ("Ерам", "Ладно."),
+            ("Ерам", "На этом, пожалуй, всё."),
+            ("Ерам", "Прощай, АРТЁМ."),
+        ])
+
         current_phase = 1
         taunt_timer = 0
         taunt_started = False
@@ -176,6 +189,15 @@ while running:
 
                         eram.set_animation(eram_laugh)
                         sounds["el"].play()
+
+
+                elif game_state == "ending_dialogue":
+
+                    ending_dialogue.handle_event(event)
+
+                    if ending_dialogue.finished:
+                        game_running = False
+
 
                 elif game_state == "battle":
 
@@ -252,9 +274,17 @@ while running:
 
                             break
 
-                if eram.hp <= 0:
-                    pygame.quit()
-                    raise SystemExit
+                if eram.hp <= 0 and game_state == "battle":
+                    eram.hp = 0
+
+                    sounds["msd"].stop()
+                    sounds["bf"].stop()
+                    sounds["el"].stop()
+                    sounds["eb"].stop()
+
+                    eram.set_animation(eram_static)
+
+                    game_state = "ending_dialogue"
 
             eram.update(dt)
 
@@ -279,6 +309,9 @@ while running:
 
             if game_state == "dialogue":
                 dialogue.draw(game_screen)
+
+            elif game_state == "ending_dialogue":
+                ending_dialogue.draw(game_screen)
 
             apply_filter()
 
